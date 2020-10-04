@@ -1,34 +1,39 @@
+# A program that classifies headlines as "fake news" or "real news" with KNN classification
+# Plots the validation accuracy with a range of k-values
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-
-import numpy
 from matplotlib import pyplot
+import numpy
 
+# Load the data from the files and splitting the data set
 def load_data(fake_data_path, real_data_path):
-    y = []
+    y = []  # Target Vector
 
-    # Convert clean_fake.txt to a list of strings
+    # Convert file paths to a list of strings
     fake_headlines = []
     with open(fake_data_path, "r") as file:
         for line in file:
           fake_headlines.append(line.strip())
           y.append(0)
 
-    # Convert clean_real.txt to a list of strings
     real_headlines = []
     with open(real_data_path, "r") as file:
         for line in file:
           real_headlines.append(line.strip())
           y.append(1)
 
+    # Convert headlines list to a bag of words
     vectorizer = CountVectorizer()
     X = vectorizer.fit_transform(fake_headlines + real_headlines)
 
+    # Split data set in to training set, validation set, and test set
     X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.7, random_state=0)
     X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=0.5, random_state=0)
     return X_train, X_val, X_test, y_train, y_val, y_test
 
+# Return the k-value with the highest validation accuracy
+# Plot the accuracies for each k
 def select_knn_model(X_train, X_val, y_train, y_val):
     k_range = range(1,21)
     training_accs = []
