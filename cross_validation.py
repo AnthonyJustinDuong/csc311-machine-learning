@@ -1,3 +1,4 @@
+# A program that determines the hyperparameter lambda that minimizes the error with a model that uses ridge regression
 import numpy as np
 from matplotlib import pyplot
 data_train = {'X': np.genfromtxt('data/data_train_X.csv', delimiter=','),
